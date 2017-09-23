@@ -3,8 +3,6 @@ var express = require("express");
 var mongoose = require("mongoose");
 // Set mongoose to leverage built in JavaScript ES6 Promises
 mongoose.Promise = Promise;
-var request = require("request");
-var cheerio = require("cheerio");
 var bodyParser = require("body-parser");
 var exphbs = require("express-handlebars");
 
