@@ -20,6 +20,11 @@ var PostSchema = new Schema({
       type: String,
       required: true,
   },
+  interesting: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   // This only saves one note's ObjectId, ref refers to the Comment model
   comments: [{
     type: Schema.Types.ObjectId,

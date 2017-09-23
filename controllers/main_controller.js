@@ -6,7 +6,7 @@ var Post = require("../models/Post.js");
 var Comment = require("../models/Comment.js");
 
 //recursive function to iterate through the articles found and save them to the mongo db
-function nextInsert(articles, counter, results, res){
+function nextInsert(articles, counter, results, cb){
     if(counter < articles.length){
         var post = articles[counter];
         post.save(function(err, newPost){
@@ -17,10 +17,10 @@ function nextInsert(articles, counter, results, res){
                 console.log(newPost);
                 results.push(newPost);
             }
-            return nextInsert(articles, (counter+1), results, res);
+            return nextInsert(articles, (counter+1), results, cb);
         });
     } else {
-        res.json(results);
+        cb(results);
     }
 }
 
@@ -59,18 +59,37 @@ function scrapeData(){
 }
 
 router.get("/", function(req, res) {
-    var hbsObj = {};
-    res.render("index", hbsObj);
+    scrapeData().then(function(scrapedData){
+        console.log("SCRAPED DATA");
+        console.log(scrapedData);
+        nextInsert(scrapedData, 0, [], function(results){
+            //results is not needed in this case
+            Post.find({interesting: false}, function(error, articles){
+                if(error){
+                    res.status(500).send("Error while getting articles from the database");
+                } else {
+                    var hbsObj = {
+                        "articles" : articles
+                    };
+                    res.render("index", hbsObj);
+                }
+            }); 
+        });
+    }).catch(function(error){
+        res.status(500).send("Error while scraping new data. Please try again later.");
+    });
 });
 
 router.get("/scrape", function(req, res){
     scrapeData().then(function(scrapedData){
         console.log("SCRAPED DATA");
         console.log(scrapedData);
-        nextInsert(scrapedData,0,[],res);
+        nextInsert(scrapedData,0,[],function(results){
+            res.json(results);
+        });
     }).catch(function(err){
         console.log(err);
-        res.status(500).send("Error while scraping new data. Please try again later");
+        res.status(500).send("Error while scraping new data. Please try again later.");
     });
 });
 

@@ -1,6 +1,29 @@
 {{> mynav}}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-3">Mongo DB Scraper</h1>
+    <p class="lead">Explore some scraped articles from the Player's Tribune</p>
+  </div>
+</div>
 <div class="container">
-    
+    {{#each articles}}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2>
+                    {{this.title}}
+                </h2>
+            </div>
+            <div class="panel-body">
+                <p>
+                    {{this.summary}}
+                </p>
+                <a href="{{this.link}}">{{this.link}}</a>
+            </div>
+            <div class="panel-footer">
+                
+            </div>
+        </div>
+    {{/each}}
 </div> <!-- container -->
 
 <script src="/assets/javascript/index.js"></script>
