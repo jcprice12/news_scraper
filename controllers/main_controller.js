@@ -93,4 +93,16 @@ router.get("/scrape", function(req, res){
     });
 });
 
+router.put("/interesting/:id", function(req, res){
+    Post.findByIdAndUpdate(req.params.id, { $set: { interesting: true }}, function (err, article) {
+        if (err){
+            res.json({
+                "error" : "Error updating article. Please try again later."
+            });
+        } else {
+            res.json(article)
+        }
+    });
+});
+
 module.exports = router;

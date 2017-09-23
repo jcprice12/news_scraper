@@ -7,7 +7,7 @@
 </div>
 <div class="container">
     {{#each articles}}
-        <div class="panel panel-default">
+        <div id={{this._id}} class="panel panel-default myArticle" data-myArticle={{this._id}}>
             <div class="panel-heading">
                 <h2>
                     {{this.title}}
@@ -20,7 +20,7 @@
                 <a href="{{this.link}}">{{this.link}}</a>
             </div>
             <div class="panel-footer">
-                
+                <button type="button" class="btn btn-default save" data-article={{this._id}}>Mark as Interesting</button>
             </div>
         </div>
     {{/each}}
