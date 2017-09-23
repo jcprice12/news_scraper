@@ -1,0 +1,20 @@
+a{
+    font-size: 14px;
+}
+
+.navbar{
+    padding:0 !important;
+    margin:0 !important;
+    background-color: #0E8466;
+    border: none;
+    border-radius:0;
+    z-index: 99;
+}
+
+.navbar-toggle{
+    background-color: #f2f2f2 !important;
+}
+
+.myNavLink{
+    color: #f2f2f2;
+}
