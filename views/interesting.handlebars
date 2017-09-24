@@ -8,8 +8,16 @@
 <div class="container">
     {{#each articles}}
         <div id={{this._id}} class="panel panel-default myArticle" data-myArticle={{this._id}}>
-            <div class="panel-heading">
-                <h2>{{this.title}}</h2>
+            <div class="panel-heading" style="background-image:{{this.image}} !important; background-size: cover;" >
+                <br>
+                <br>
+                <br>
+                <h2 class="myPanelHeading">
+                    {{this.title}}
+                </h2>
+                <br>
+                <br>
+                <br>
             </div>
             <div class="panel-body">
                 <p>{{this.summary}}</p>
@@ -19,14 +27,14 @@
                     {{#each this.comments}}
                         <div id="comment_{{this._id}}" class="panel panel-default myComment">
                             <div class="panel-heading commentHeading">
-                                <h4>{{this.poster}}</h4>
+                                <h4>By: {{this.poster}}</h4>
                             </div>
                             <div class="panel-body">
                                 <p>{{this.text}}</p>
-                                <p>Likes: {{this.likes}}</p>
+                                <p id="likes_{{this._id}}">Likes: {{this.likes}}</p>
                             </div>
                             <div class="panel-footer">
-                                <button type="button" class="btn btn-success like" data-like-comment={{this._id}}>Like</button>
+                                <!-- <button type="button" class="btn btn-success like" data-like-comment={{this._id}}>Like</button> -->
                                 <button type="button" class="btn btn-danger delete" data-delete-comment={{this._id}}>Delete</button>
                             </div>
                         </div>

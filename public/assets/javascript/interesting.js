@@ -26,26 +26,30 @@ $(document).ready(function(){
             url: "/comment/" + id,
             type: "DELETE",
         }).done(function( dataBack ) {
-            if(dataBack.hasOwnProperty("redirect")){
-                window.location = dataBack.redirect
+            if(dataBack.hasOwnProperty("error")){
+                alert(dataBack.error);
+            } else {
+                if(dataBack.hasOwnProperty("success")){
+                    $("#comment_" + dataBack.success).remove();
+                }
             }
         });
     });
 
-    // $(".commentForm").submit(function(event){
-    //     event.preventDefault();
-    //     var commentPoster = $(this).find(".posterInput").val().trim();
-    //     var commentText = $(this).find("textarea").val().trim();
-    //     console.log(commentPoster);
-    //     console.log(commentText);
-    //     if(commentPoster && commentText){
-    //         $.ajax({
-    //             url: $(this).attr("data-url"),
-    //             method: "POST",
-    //             dataType: "json",
-    //         }).done(function( dataBack ){
+    // $(".like").click(function(){
+    //     var id=$(this).attr("data-like-comment");
+    //     $.ajax({
+    //         url: "/comment/" + id,
+    //         method: "PUT",
+    //         dataType: "json",
+    //     }).done(function( dataBack ) {
+    //         if(dataBack.hasOwnProperty("error")){
+    //             alert(dataBack.error);
+    //         } else {
     //             console.log(dataBack);
-    //         });
-    //     }
+    //             $("#likes_"+dataBack._id).html("Likes: " + dataBack.likes);
+    //         }
+    //     });
     // });
+
 });

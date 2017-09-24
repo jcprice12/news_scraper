@@ -20,6 +20,10 @@ var PostSchema = new Schema({
       type: String,
       required: true,
   },
+  image: {
+      type: String,
+      required: true,
+  },
   interesting: {
     type: Boolean,
     required: true,

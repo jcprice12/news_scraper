@@ -38,6 +38,7 @@ function scrapeData(){
                 //get array of article elements
                 var articles = $(articlesCont).children("article");
                 articles.each(function(i, element){
+                    var backgroundImg = $(element).find(".css-cover").css("background-image");
                     var content = $(element).find(".entry-content");
                     var aTag = $(content).find("h2").find("a");
                     var heading = $(aTag).text();
@@ -46,7 +47,8 @@ function scrapeData(){
                     var post = new Post({
                         "title": heading,
                         "link": articleLink,
-                        "summary": body, 
+                        "summary": body,
+                        "image": backgroundImg, 
                     });
                     results.push(post);
                 });
@@ -67,7 +69,7 @@ router.get("/scrape", function(req, res){
         });
     }).catch(function(err){
         console.log(err);
-        res.status(500).send("Error while scraping new data. Please try again later.");
+        res.json({"error" : "Error while scraping new data. Please try again later."});
     });
 });
 
@@ -149,41 +151,52 @@ router.delete("/comment/:id", function(req, res){
     Comment.findOne({_id : req.params.id}, function(err, comment){
         if(err){
             console.log(err);
-            res.status(500).send("Error finding comment to delete. Please try again later.");
+            res.json({"error" : "Error finding comment to delete. Please try again later."});
         } else {
-            console.log("found comment");
+            console.log("found comment to delete");
             comment.remove(function(errRemove){
                 if(errRemove){
                     console.log(errRemove);
-                    res.status(500).send("Error deleting comment. Please try again later.");
+                    res.json({"error" : "Error deleting comment. Pleasse try again later."});
                 } else {
-                    res.json({"redirect" : "/interesting"});
+                    res.json({"success" : req.params.id});
                 }
             });
         }
     });
 });
 
+// router.put("/comment/:id", function(req, res){
+//     Comment.findOne({_id : req.params.id}, function(err, comment){
+//         if(err){
+//             console.log(err);
+//             res.json({"error" : "Error finding comment to like. Please try again later."});
+//         } else {
+//             console.log("found comment to like");
+//             comment.likes += 1;
+//             comment.save(function (err, updatedComment) {
+//                 if(err){
+//                     res.json({"error" : "Error liking comment. Please try again later."})
+//                 } else {
+//                     res.json(updatedComment);
+//                 }
+//             });
+//         }
+//     });
+// });
+
 router.get("/", function(req, res) {
-    scrapeData().then(function(scrapedData){
-        console.log("SCRAPED DATA");
-        console.log(scrapedData);
-        nextInsert(scrapedData, 0, [], function(results){
-            //results is not needed in this case
-            Post.find({interesting: false}, function(error, articles){
-                if(error){
-                    res.status(500).send("Error while getting articles from the database");
-                } else {
-                    var hbsObj = {
-                        "articles" : articles
-                    };
-                    res.render("index", hbsObj);
-                }
-            }); 
-        });
-    }).catch(function(error){
-        res.status(500).send("Error while scraping new data. Please try again later.");
-    });
+    Post.find({interesting: false}, function(error, articles){
+        if(error){
+            res.status(500).send("Error while getting articles from the database");
+        } else {
+            var hbsObj = {
+                "articles" : articles,
+                "home" : true
+            };
+            res.render("index", hbsObj);
+        }
+    }); 
 });
 
 module.exports = router;

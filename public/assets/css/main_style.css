@@ -21,3 +21,8 @@ h4{
     background-color: #0E8466 !important;
     color: #f2f2f2 !important;
 }
+
+.myPanelHeading{
+    color:#f2f2f2;
+    text-shadow: 2px 2px 2px #2f2f2f !important;
+}

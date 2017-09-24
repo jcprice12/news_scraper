@@ -5,13 +5,19 @@
     <p class="lead">Explore some scraped articles from the Player's Tribune</p>
   </div>
 </div>
-<div class="container">
+<div id="homeArticles" class="container">
     {{#each articles}}
         <div id={{this._id}} class="panel panel-default myArticle" data-myArticle={{this._id}}>
-            <div class="panel-heading">
-                <h2>
+            <div class="panel-heading" style="background-image:{{this.image}} !important; background-size: cover; ">
+                <br>
+                <br>
+                <br>
+                <h2 class="myPanelHeading">
                     {{this.title}}
                 </h2>
+                <br>
+                <br>
+                <br>
             </div>
             <div class="panel-body">
                 <p>

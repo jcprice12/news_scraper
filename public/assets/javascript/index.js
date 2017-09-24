@@ -19,4 +19,23 @@ $(document).ready(function(){
             }    
         });
     });
+
+    $("#scrapeButton").click(function(){
+        $.ajax({
+            url: "/scrape",
+            method : "GET",
+            dataType: "json",
+        }).done(function(dataBack){
+            console.log(dataBack);
+            if(dataBack.hasOwnProperty("error")){
+                alert(dataBack.error);
+            } else {
+                if(dataBack.length > 0){
+                    location.reload();
+                } else {
+                    alert("No new articles scraped.");
+                }
+            }
+        });
+    });
 });

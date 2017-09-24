@@ -13,11 +13,20 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <a id="contactLink" href="/interesting">
+                <li>
+                    <a id="interestingLink" href="/interesting">
                         <span class="myNavLink">Interesting Posts</span>
                     </a>
                 </li>
+                {{#if home}}
+                <li>
+                    <p class="navbar-btn">
+                        <a id="scrapeButton" class="btn btn-default">
+                            Scrape Data
+                        </a>
+                    </p>
+                </li>
+                {{/if}}
             </ul>
         </div>
     </div>
