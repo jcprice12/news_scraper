@@ -31,7 +31,6 @@
                             </div>
                             <div class="panel-body">
                                 <p>{{this.text}}</p>
-                                <p id="likes_{{this._id}}">Likes: {{this.likes}}</p>
                             </div>
                             <div class="panel-footer">
                                 <!-- <button type="button" class="btn btn-success like" data-like-comment={{this._id}}>Like</button> -->
@@ -49,10 +48,10 @@
                             <form action="/comments/{{this._id}}" method="POST" id="form_comment_{{this._id}}" class="commentForm">
                                 <div class="form-group">
                                     <label for="comment_poster_{{this._id}}">Name</label>
-                                    <input type="text" class="form-control posterInput" id="comment_poster_{{this._id}}" name="commentPoster" required>
+                                    <input type="text" class="form-control posterInput" id="comment_poster_{{this._id}}" name="commentPoster" required maxlength="50">
                                 </div>
                                 <div class="form-group">
-                                    <textarea class="form-control" rows="5" id="comment_text_{{this._id}}" name="commentText" required></textarea>
+                                    <textarea class="form-control" rows="5" id="comment_text_{{this._id}}" name="commentText" required maxlength="300"></textarea>
                                 </div>
                                 <input id="add_comment_{{this._id}}" type="submit" class="btn btn-default" value="Add Comment">
                             </form>

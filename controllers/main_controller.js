@@ -122,26 +122,28 @@ router.post("/comments/:id", function(req, res){
             var comment = new Comment({
                 text : req.body.commentText,
                 poster: req.body.commentPoster,
-                likes: 0,
+                likes: 0,//TODO: Add a like functionality. Will need to implement true users
             });
-            comment.save(function(err, newComment){
-                if(err){
-                    console.log(err);
-                    res.status(500).send("Error posting comment. Please try again later.");
-                } else {
-                    console.log("Saving new comment");
-                    post.comments.push(newComment._id);
-                    post.save(function(errSave, savedPost){
-                        if(errSave){
-                            console.log(errSave);
-                            res.status(500).send("Error assigning comment to article.");
-                        } else {
-                            console.log("comment creation successful");
-                            res.redirect("/interesting");
-                        }
-                    });
-                }
-            });
+            if(comment.poster.length <= 50 && comment.poster.length >= 1 && comment.text.length >= 1 && comment.text.length <= 300){
+                comment.save(function(err, newComment){
+                    if(err){
+                        console.log(err);
+                        res.status(500).send("Error posting comment. Please try again later.");
+                    } else {
+                        console.log("Saving new comment");
+                        post.comments.push(newComment._id);
+                        post.save(function(errSave, savedPost){
+                            if(errSave){
+                                console.log(errSave);
+                                res.status(500).send("Error assigning comment to article.");
+                            } else {
+                                console.log("comment creation successful");
+                                res.redirect("/interesting");
+                            }
+                        });
+                    }
+                });
+            }
         }
     });
 });
