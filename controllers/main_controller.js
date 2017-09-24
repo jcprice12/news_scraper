@@ -58,6 +58,112 @@ function scrapeData(){
     return promise;
 }
 
+router.get("/scrape", function(req, res){
+    scrapeData().then(function(scrapedData){
+        console.log("SCRAPED DATA");
+        console.log(scrapedData);
+        nextInsert(scrapedData,0,[],function(results){
+            res.json(results);
+        });
+    }).catch(function(err){
+        console.log(err);
+        res.status(500).send("Error while scraping new data. Please try again later.");
+    });
+});
+
+router.get("/interesting", function(req, res){
+    Post.find({interesting: true}).populate("comments").exec(function(error, articles){
+        if(error){
+            res.status(500).send("Error while getting intersting articles from the database. Please try again later");
+        } else {
+            var hbsObj = {
+                "articles" : articles
+            };
+            res.render("interesting", hbsObj);
+        }
+    });
+});
+
+router.put("/interesting/:id", function(req, res){
+    Post.findByIdAndUpdate(req.params.id, { $set: { interesting: true }}, function (err, article) {
+        if (err){
+            res.json({
+                "error" : "Error updating article. Please try again later."
+            });
+        } else {
+            res.json(article)
+        }
+    });
+});
+
+router.put("/uninteresting/:id", function(req, res){
+    Post.findByIdAndUpdate(req.params.id, { $set: { interesting: false }}, function (err, article) {
+        if (err){
+            res.json({
+                "error" : "Error updating article. Please try again later."
+            });
+        } else {
+            res.json(article)
+        }
+    });
+});
+
+//id refers to the article id
+router.post("/comments/:id", function(req, res){
+    console.log("found the route to comment");
+    Post.findOne({_id : req.params.id}, function(errPost, post){
+        if(errPost){
+            console.log(errPost);
+            res.status(500).send("Error getting article to comment on. Please try again later.")
+        } else {
+            console.log("Creating new comment");
+            var comment = new Comment({
+                text : req.body.commentText,
+                poster: req.body.commentPoster,
+                likes: 0,
+            });
+            comment.save(function(err, newComment){
+                if(err){
+                    console.log(err);
+                    res.status(500).send("Error posting comment. Please try again later.");
+                } else {
+                    console.log("Saving new comment");
+                    post.comments.push(newComment._id);
+                    post.save(function(errSave, savedPost){
+                        if(errSave){
+                            console.log(errSave);
+                            res.status(500).send("Error assigning comment to article.");
+                        } else {
+                            console.log("comment creation successful");
+                            res.redirect("/interesting");
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
+router.delete("/comment/:id", function(req, res){
+    console.log("found delete path");
+    Comment.findOne({_id : req.params.id}, function(err, comment){
+        if(err){
+            console.log(err);
+            res.status(500).send("Error finding comment to delete. Please try again later.");
+        } else {
+            console.log("found comment");
+            comment.remove(function(errRemove){
+                if(errRemove){
+                    console.log(errRemove);
+                    res.status(500).send("Error deleting comment. Please try again later.");
+                } else {
+                    res.json({"redirect" : "/interesting"});
+                }
+            });
+        }
+    });
+});
+
 router.get("/", function(req, res) {
     scrapeData().then(function(scrapedData){
         console.log("SCRAPED DATA");
@@ -77,31 +183,6 @@ router.get("/", function(req, res) {
         });
     }).catch(function(error){
         res.status(500).send("Error while scraping new data. Please try again later.");
-    });
-});
-
-router.get("/scrape", function(req, res){
-    scrapeData().then(function(scrapedData){
-        console.log("SCRAPED DATA");
-        console.log(scrapedData);
-        nextInsert(scrapedData,0,[],function(results){
-            res.json(results);
-        });
-    }).catch(function(err){
-        console.log(err);
-        res.status(500).send("Error while scraping new data. Please try again later.");
-    });
-});
-
-router.put("/interesting/:id", function(req, res){
-    Post.findByIdAndUpdate(req.params.id, { $set: { interesting: true }}, function (err, article) {
-        if (err){
-            res.json({
-                "error" : "Error updating article. Please try again later."
-            });
-        } else {
-            res.json(article)
-        }
     });
 });
 

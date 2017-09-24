@@ -12,7 +12,11 @@ $(document).ready(function(){
             dataType: "json",
         }).done(function( dataBack ) {
             console.log(dataBack);
-            removeArticle(id);
+            if(dataBack.hasOwnProperty("error")){
+                alert(dataBack.error);
+            } else {
+                removeArticle(id);
+            }    
         });
     });
 });

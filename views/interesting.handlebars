@@ -1,0 +1,63 @@
+{{> mynav}}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-3">Interesting Articles</h1>
+    <p class="lead">View articles that other users thought were interesting.</p>
+  </div>
+</div>
+<div class="container">
+    {{#each articles}}
+        <div id={{this._id}} class="panel panel-default myArticle" data-myArticle={{this._id}}>
+            <div class="panel-heading">
+                <h2>{{this.title}}</h2>
+            </div>
+            <div class="panel-body">
+                <p>{{this.summary}}</p>
+                <a href="{{this.link}}">{{this.link}}</a>
+                <div id="comments_{{this._id}}" class="collapse">
+                    <h3>Comments</h3>
+                    {{#each this.comments}}
+                        <div id="comment_{{this._id}}" class="panel panel-default myComment">
+                            <div class="panel-heading commentHeading">
+                                <h4>{{this.poster}}</h4>
+                            </div>
+                            <div class="panel-body">
+                                <p>{{this.text}}</p>
+                                <p>Likes: {{this.likes}}</p>
+                            </div>
+                            <div class="panel-footer">
+                                <button type="button" class="btn btn-success like" data-like-comment={{this._id}}>Like</button>
+                                <button type="button" class="btn btn-danger delete" data-delete-comment={{this._id}}>Delete</button>
+                            </div>
+                        </div>
+                    {{/each}}
+                    <div class="panel panel-default addCommentPanel">
+                        <div class="panel-heading commentHeading">
+                            <h3>
+                                Add Comment
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <form action="/comments/{{this._id}}" method="POST" id="form_comment_{{this._id}}" class="commentForm">
+                                <div class="form-group">
+                                    <label for="comment_poster_{{this._id}}">Name</label>
+                                    <input type="text" class="form-control posterInput" id="comment_poster_{{this._id}}" name="commentPoster" required>
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control" rows="5" id="comment_text_{{this._id}}" name="commentText" required></textarea>
+                                </div>
+                                <input id="add_comment_{{this._id}}" type="submit" class="btn btn-default" value="Add Comment">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button type="button" class="btn btn-default uninteresting" data-article={{this._id}}>Mark as Uninteresting</button>
+                <button type="button" class="btn btn-default comment" data-toggle="collapse" data-target="#comments_{{this._id}}">View Comments</button>
+            </div>
+        </div>
+    {{/each}}
+</div> <!-- container -->
+
+<script src="/assets/javascript/interesting.js"></script>

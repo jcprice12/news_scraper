@@ -28,7 +28,7 @@ var PostSchema = new Schema({
   // This only saves one note's ObjectId, ref refers to the Comment model
   comments: [{
     type: Schema.Types.ObjectId,
-    ref: "Comment"
+    ref: "Comment",
   }]
 });
 

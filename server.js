@@ -40,9 +40,6 @@ db.once("openUri", function() {
 // Import routes and give the server access to them.
 var routes = require("./controllers/main_controller.js");
 app.use("/", routes);
-app.get("*", function(req, res){
-    res.redirect("/");
-});
 
 app.listen(PORT, function() {
     console.log("App running on port " + PORT + "!");

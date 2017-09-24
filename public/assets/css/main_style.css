@@ -9,6 +9,15 @@ body{
     background: url("/assets/images/black_lozenge.png");
     color: #2f2f2f;
     font-family: Arial;
-	font-size: 18px;
+	font-size: 16px;
     height:100% !important;
+}
+h4{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.commentHeading{
+    background-color: #0E8466 !important;
+    color: #f2f2f2 !important;
 }
