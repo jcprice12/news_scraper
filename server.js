@@ -8,6 +8,7 @@ var exphbs = require("express-handlebars");
 
 var app = express();
 var PORT = process.env.PORT || 8080;
+var mongo_connection = process.env.MONGODB_URI || "mongodb://localhost/news_scraper";
 
 app.use(express.static("public"));
 app.use(bodyParser.json());
@@ -22,7 +23,7 @@ app.set("view engine", "handlebars");
 
 // Hook mongojs configuration to the db variable
 // Database configuration with mongoose
-mongoose.connect("mongodb://localhost/news_scraper", {
+mongoose.connect(mongo_connection, {
     useMongoClient: true
 });
 var db = mongoose.connection;
