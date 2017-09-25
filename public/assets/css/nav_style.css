@@ -18,3 +18,7 @@ a{
 .myNavLink{
     color: #f2f2f2;
 }
+
+.noLinkAnchor:hover{
+    cursor: pointer;
+}

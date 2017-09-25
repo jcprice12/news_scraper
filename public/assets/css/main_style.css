@@ -24,5 +24,9 @@ h4{
 
 .myPanelHeading{
     color:#f2f2f2;
-    text-shadow: 2px 2px 2px #2f2f2f !important;
+    text-shadow: 2px 2px 2px #000 !important;
+}
+
+.myArticle{
+    border:none;
 }
